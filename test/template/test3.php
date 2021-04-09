@@ -1,0 +1,1 @@
+<?php $echo($dainari); ?><?php $echo($shonari); ?><?php $echo($quote); ?><?php $echo($doublequote); ?><?php $echo($amp); ?>

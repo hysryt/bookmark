@@ -1,0 +1,1 @@
+姓は<?php $echo($myoji); ?>、名は<?php $echo($namae); ?>

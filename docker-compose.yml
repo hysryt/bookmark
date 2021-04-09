@@ -1,0 +1,22 @@
+version: '3'
+volumes:
+  db-store:
+
+services:
+  php:
+    build: ./docker/php
+    volumes:
+      - ./www:/var/www
+    ports:
+      - "8080:80"
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db-store:/var/lib/mysql
+    environment:
+      TZ: UTC
+      MYSQL_DATABASE: bookmark
+      MYSQL_USER: bookmark
+      MYSQL_PASSWORD: bookmark
+      MYSQL_ROOT_PASSWORD: bookmark

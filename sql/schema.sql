@@ -1,0 +1,8 @@
+CREATE TABLE bookmark (
+  id INT PRIMARY KEY,
+  url VARCHAR(4096) NOT NULL,
+  title VARCHAR(1024) NOT NULL,
+  description VARCHAR(1024) NOT NULL,
+  thumbnail VARCHAR(1024),
+  created_at DATETIME NOT NULL,
+);

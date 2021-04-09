@@ -1,0 +1,5 @@
+/www/bookmarks
+/www/html/thumbnails/*
+/www/log/*.log
+
+.DS_Store
