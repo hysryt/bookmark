@@ -18,6 +18,7 @@ POST /bookmarks/{id}/delete/ BookmarkController::delete
 - Configを設定ファイル切り離す
 - URL登録時のバリデーション
 - データベース接続
+- phpcs
 
 - HtmlHttpDownloader
   - download(): HtmlDocument
