@@ -2,7 +2,7 @@
 
 namespace Hysryt\Bookmark\Model;
 
-use Hysryt\Bookmark\Framework\Log\Log;
+use Hysryt\Bookmark\Log\Log;
 
 /**
  * Bookmarkを作成するクラス

@@ -1,8 +1,9 @@
 <?php
 
-namespace Hysryt\Bookmark\Framework\Log;
+namespace Hysryt\Bookmark\Log;
 
 use Exception;
+use Hysryt\Bookmark\Framework\Log\LogLevel;
 
 /**
  * ロギング用のユーティリティクラス

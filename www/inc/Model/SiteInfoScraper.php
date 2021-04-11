@@ -2,7 +2,7 @@
 
 namespace Hysryt\Bookmark\Model;
 
-use Hysryt\Bookmark\Framework\Log\Log;
+use Hysryt\Bookmark\Log\Log;
 use Hysryt\Bookmark\Framework\Exception\NetworkException;
 use Hysryt\Bookmark\Framework\Exception\NotSupportedException;
 use Hysryt\Bookmark\Framework\Exception\PermissionDeniedException;

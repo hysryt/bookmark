@@ -14,7 +14,7 @@ POST /bookmarks/{id}/delete/ BookmarkController::delete
 - データベース登録前の文字数チェック
 - PathAttributes
   - Input
-- inc/Modelの中のものを全てフレームワークから切り離す（主にLogとException）
+- inc/Modelの中のものを全てフレームワークから切り離す（主にException）
 - Configを設定ファイル切り離す
 - URL登録時のバリデーション
 - データベース接続

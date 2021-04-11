@@ -3,9 +3,8 @@
 require_once(__DIR__ . '/../www/inc/autoload.php');
 
 use Hysryt\Bookmark\Framework\Log\FileLogger;
-use Hysryt\Bookmark\Framework\Log\Log;
+use Hysryt\Bookmark\Log\Log;
 use Hysryt\Bookmark\Model\BookmarkCreator;
-use Hysryt\Bookmark\BookmarkFactory;
 use Hysryt\Bookmark\Repository\BookmarkFileRepository;
 
 try {
