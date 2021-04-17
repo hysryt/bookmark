@@ -1,5 +1,6 @@
 /www/bookmarks
 /www/html/thumbnails/*
 /www/log/*.log
+/test/thumbnail/*
 
 .DS_Store

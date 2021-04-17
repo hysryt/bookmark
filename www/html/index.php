@@ -18,6 +18,9 @@ $config = new Config([
     'view.basedir' => '/var/www/view',
     'siteurl' => 'http://localhost:8080',
     'thumbnail.url' => 'http://localhost:8080/thumbnails',
+    'thumbnail.dir' => '/var/www/html/thumbnails',
+    'thumbnail.width' => 400,
+    'thumbnail.height' => 210,
 ]);
 
 // ルート設定

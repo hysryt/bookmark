@@ -3,12 +3,12 @@
 namespace Hysryt\Bookmark\Controller;
 
 use Exception;
-use Hysryt\Bookmark\Model\BookmarkCreator;
 use Hysryt\Bookmark\Framework\Http\Response;
 use Hysryt\Bookmark\Framework\Router\PermalinkFactory;
 use Hysryt\Bookmark\Framework\View\TemplateEngineInterface;
 use Hysryt\Bookmark\Repository\BookmarkRepositoryInterface;
 use Hysryt\Bookmark\Repository\RepositoryException;
+use Hysryt\Bookmark\Service\BookmarkService;
 use Hysryt\Bookmark\UseCase\BookmarkIndex\BookmarkIndexInput;
 use Hysryt\Bookmark\UseCase\BookmarkCreateSubmit\BookmarkCreateSubmitInput;
 use Hysryt\Bookmark\UseCase\BookmarkShow\BookmarkShowInput;
@@ -21,13 +21,15 @@ class BookmarkController {
 	private int $numPerPage;
 	private BookmarkRepositoryInterface $repository;
 	private BookmarkViewFactory $bookmarkViewFactory;
+	private BookmarkService $bookmarkService;
 
-	public function __construct(PermalinkFactory $permalinkFactory, TemplateEngineInterface $templateEngine, int $numPerPage, BookmarkRepositoryInterface $repository, BookmarkViewFactory $bookmarkViewFactory) {
+	public function __construct(PermalinkFactory $permalinkFactory, TemplateEngineInterface $templateEngine, int $numPerPage, BookmarkRepositoryInterface $repository, BookmarkViewFactory $bookmarkViewFactory, BookmarkService $bookmarkService) {
 		$this->permalinkFactory = $permalinkFactory;
 		$this->templateEngine = $templateEngine;
 		$this->numPerPage = $numPerPage;
 		$this->repository = $repository;
 		$this->bookmarkViewFactory = $bookmarkViewFactory;
+		$this->bookmarkService = $bookmarkService;
 	}
 
 	/**
@@ -103,8 +105,7 @@ class BookmarkController {
 		}
 
 		try {
-			$bookmarkCreator = new BookmarkCreator();
-			$bookmark = $bookmarkCreator->create($input->getUrl());
+			$bookmark = $this->bookmarkService->createBookmark($input->getUrl());
 		} catch (Exception $e) {
 			// 失敗（URLから情報を取得できない）
 		}

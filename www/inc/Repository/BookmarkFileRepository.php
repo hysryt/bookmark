@@ -169,7 +169,8 @@ class BookmarkFileRepository implements BookmarkRepositoryInterface {
 		$aryList = unserialize($serializedData);
 		$list = new BookmarkList();
 		foreach ($aryList as $aryBookmark) {
-			$list->append($this->createBookmarkFromArray($aryBookmark));
+			$bookmark = $this->createBookmarkFromArray($aryBookmark);
+			$list->append($bookmark);
 		}
 		return $list;
 	}
@@ -225,7 +226,8 @@ class BookmarkFileRepository implements BookmarkRepositoryInterface {
 		$title = isset($data['title']) ? $data['title'] : null;
 		$description = isset($data['description']) ? $data['description'] : null;
 		$thumbnailFilename = isset($data['thumbnail']) ? $data['thumbnail'] : null;
-		return new Bookmark($url, $title, $description, $thumbnailFilename, $id);
+		$bookmark = new Bookmark($url, $title, $description, $thumbnailFilename, $id);
+		return $bookmark;
     }
 
 	/**

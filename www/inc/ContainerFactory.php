@@ -11,6 +11,7 @@ use Hysryt\Bookmark\Framework\Router\PermalinkFactory;
 use Hysryt\Bookmark\Framework\Router\Router;
 use Hysryt\Bookmark\Framework\Router\RouterConfig;
 use Hysryt\Bookmark\Repository\BookmarkFileRepository;
+use Hysryt\Bookmark\Service\BookmarkService;
 use Hysryt\Bookmark\ViewObject\BookmarkViewFactory;
 use Psr\Container\ContainerInterface;
 
@@ -44,10 +45,20 @@ class ContainerFactory {
                 $con->get('config')->get('index.numPerPage'),
                 $con->get(BookmarkRepositoryInterface::class),
                 $con->get(BookmarkViewFactory::class),
+                $con->get(BookmarkService::class)
             );
         });
         $container->setClosure(NotFoundController::class, function($con) {
             return new NotFoundController();
+        });
+
+        // Service
+        $container->setClosure(BookmarkService::class, function($con) {
+            return new BookmarkService(
+                $con->get('config')->get('thumbnail.dir'),
+                $con->get('config')->get('thumbnail.width'),
+                $con->get('config')->get('thumbnail.height')
+            );
         });
         
         // Repository

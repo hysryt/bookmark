@@ -100,6 +100,15 @@ class SiteInfoScraper {
 	}
 
 	/**
+	 * サムネイル画像（OGP画像）のURLを取得
+	 *
+	 * @return string
+	 */
+	public function getThumbnailPictureUrl(): bool {
+		return $this->ogp->getImage();
+	}
+
+	/**
 	 * OGPの画像をダウンロードし、リサイズして保存
 	 *
 	 * @param string $distDir 保存先ディレクトリ
