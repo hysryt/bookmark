@@ -2,6 +2,7 @@
 
 namespace Hysryt\Bookmark\Framework\Http;
 
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 
 class Uri implements UriInterface {
@@ -29,6 +30,44 @@ class Uri implements UriInterface {
         $this->path     = $path;
         $this->query    = $query;
         $this->fragment = $fragment;
+    }
+
+    /**
+     * URI文字列からUriインスタンスを生成
+     * 
+     * @param string $uriStr
+     * @throws InvalidArgumentException
+     */
+    public static function createFromUriString($uriStr) {
+        $regexp =  "\A(?P<scheme>[a-zA-Z]{1,6}?)://((?P<userInfo>[^@/]+)@)?(?P<host>[^:/]*)(:(?P<port>[0-9]+))?(?P<path>/[^\?#]*)?(\?(?P<query>[^#]*))?(#(?P<fragment>.*))?\Z";
+        $regexp = '/' . str_replace('/', '\/', $regexp) . '/';
+
+        $regexpResult = preg_match($regexp, $uriStr, $matches);
+        if ($regexpResult !== 1) {
+            throw new InvalidArgumentException('不正なURI形式');
+        }
+
+        $matches = array_merge([
+            'userInfo' => '',
+            'port'     => 0,
+            'path'     => '',
+            'query'    => '',
+            'fragment' => '',
+        ], $matches);
+
+        if ($matches['port'] === 0) {
+            $matches['port'] = ($matches['scheme'] === 'http') ? 80 : 443;
+        }
+
+        return new Uri(
+            $matches['scheme'],
+            $matches['userInfo'],
+            $matches['host'],
+            $matches['port'],
+            $matches['path'],
+            $matches['query'],
+            $matches['fragment']
+        );
     }
     
     /**
