@@ -2,6 +2,8 @@
 
 namespace Hysryt\Bookmark\Model;
 
+use DOMXPath;
+
 /**
  * OGP情報
  */
@@ -9,7 +11,7 @@ class OpenGraph {
 	/**
 	 * OGPのプロパティ名
 	 */
-	const PROPERTIES = [
+	const PROPERTY_NAMES = [
 		'og:url',
 		'og:type',
 		'og:title',
@@ -29,6 +31,26 @@ class OpenGraph {
 	 */
 	public function __construct(array $map) {
 		$this->map = $map;
+	}
+
+	/**
+	 * DOMXPathインスタンスからOpenGraphインスタンスを生成
+	 */
+	public static function createFromDOMXpath(DOMXPath $domTree): OpenGraph {
+		$map = array();
+		foreach ($domTree->query('head/meta') as $meta) {
+			if (! $meta->hasAttribute('property') || ! $meta->hasAttribute('content')) {
+				continue;
+			}
+
+			$property = $meta->getAttribute('property');
+			$content = $meta->getAttribute('content');
+
+			if (in_array($property, self::PROPERTY_NAMES)) {
+				$map[$property] = $content;
+			}
+		}
+		return new OpenGraph($map);
 	}
 
 	/**

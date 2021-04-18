@@ -71,19 +71,7 @@ class HtmlParser {
 	 * @return OpenGraph
 	 */
 	public function parseOgp(): OpenGraph {
-		$map = array();
-		foreach ($this->domTree->query('head/meta') as $meta) {
-			if (! $meta->hasAttribute('property') || ! $meta->hasAttribute('content')) {
-				continue;
-			}
-
-			$property = $meta->getAttribute('property');
-			$content = $meta->getAttribute('content');
-
-			if (in_array($property, OpenGraph::PROPERTIES)) {
-				$map[$property] = $content;
-			}
-		}
-		return new OpenGraph($map);
+		$ogp = OpenGraph::createFromDOMXpath($this->domTree);
+		return $ogp;
 	}
 }

@@ -24,7 +24,6 @@ POST /bookmarks/{id}/delete/ BookmarkController::delete
   - ネットアクセス自体別途クラスをつくって隠蔽化？
 - URLをstringではなくUriインスタンスにする
 - BookmarkView::hasThumbnail()
-- OpenGraph::getImage -> OpenGraph::getImageUrl()
 
 - HtmlHttpDownloader
   - download(): HtmlDocument
