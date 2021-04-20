@@ -29,6 +29,15 @@ class ValidationResult {
 	}
 
 	/**
+	 * 全てのエラーを取得
+	 * 
+	 * @return array
+	 */
+	public function getAllErrors() {
+		return $this->errors;
+	}
+
+	/**
 	 * 指定したキーに紐づくエラーを取得
 	 *
 	 * @param string $name

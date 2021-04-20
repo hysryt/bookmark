@@ -102,6 +102,11 @@ class BookmarkController {
 		$validateResult = $input->validate();
 		if ($validateResult->isError()) {
 			// 失敗（入力値エラー）
+			$body = $this->templateEngine->render('bookmark.createForm.php', [
+				'actionUrl' => $this->permalinkFactory->create('bookmark.createSubmit'),
+				'errors' => $validateResult->getAllErrors(),
+			]);
+			return Response::ok($body);
 		}
 
 		try {

@@ -55,8 +55,10 @@ class Uri implements UriInterface {
             'fragment' => '',
         ], $matches);
 
-        if ($matches['port'] === 0) {
+        if ($matches['port'] === '' || $matches['port'] === 0) {
             $matches['port'] = ($matches['scheme'] === 'http') ? 80 : 443;
+        } else {
+            $matches['port'] = intval($matches['port']);
         }
 
         return new Uri(
