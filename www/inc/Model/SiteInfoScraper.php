@@ -9,13 +9,13 @@ use Hysryt\Bookmark\Framework\Exception\PermissionDeniedException;
 use Hysryt\Bookmark\Framework\Exception\NotFoundException;
 use LogicException;
 use Exception;
-
+use Hysryt\Bookmark\Framework\Http\Uri;
 
 /**
  * サイト情報をスクレイピングするクラス
  */
 class SiteInfoScraper {
-	private string $url;
+	private Uri $url;
 	private ?string $title;
 	private ?string $description;
 	private string $html;
@@ -24,22 +24,15 @@ class SiteInfoScraper {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param string $url
+	 * @param Uri $url
 	 * @throws NetworkException - ネットワークエラー
 	 * @throws NotSupportedException - URLから取得したデータが未対応のファイル形式
 	 */
-	public function __construct(string $url) {
+	public function __construct(Uri $url) {
 		$this->url = $url;
 
-		// 404がエラーとなるのを抑制
-		$context = stream_context_create();
-		stream_context_set_option($context, 'http', 'ignore_errors', true);
-
 		Log::info('取得 ' . $this->url);
-		$data = file_get_contents($this->url, false, $context);
-		if ($data === false) {
-			throw new NetworkException('network error');
-		}
+		$data = $this->fetchData($this->url);
 
 		// HTML形式以外は拒否
 		$mimeType = $this->getMimeType($data);
@@ -50,6 +43,24 @@ class SiteInfoScraper {
 
 		$this->html = $data;
 		$this->parse();
+	}
+
+	/**
+	 * URLからデータを取得
+	 * @param Uri $uri
+	 * @return string
+	 */
+	private function fetchData(Uri $url): string {
+		// 404がエラーとなるのを抑制
+		$context = stream_context_create();
+		stream_context_set_option($context, 'http', 'ignore_errors', true);
+
+		$data = file_get_contents((string) $url, false, $context);
+		if ($data === false) {
+			throw new NetworkException('network error');
+		}
+
+		return $data;
 	}
 
 	/**
@@ -220,16 +231,11 @@ class SiteInfoScraper {
 	}
 
 	/**
-	 * 以下の優先順位でURLを取得
-	 * 1. og:url
-	 * 2. 渡されたURL
+	 * URLを取得
 	 *
-	 * @return void
+	 * @return Uri
 	 */
-	public function getUrl(): ?string {
-		if ($this->ogp && $this->ogp->getUrl()) {
-			return $this->ogp->getUrl();
-		}
+	public function getUrl(): Uri {
 		return $this->url;
 	}
 

@@ -4,6 +4,7 @@ namespace Hysryt\Bookmark\Service;
 
 use Hysryt\Bookmark\Framework\Exception\NetworkException;
 use Hysryt\Bookmark\Framework\Exception\NotSupportedException;
+use Hysryt\Bookmark\Framework\Http\Uri;
 use Hysryt\Bookmark\Log\Log;
 use Hysryt\Bookmark\Model\Bookmark;
 use Hysryt\Bookmark\Model\SiteInfoScraper;
@@ -40,6 +41,7 @@ class BookmarkService {
      */
     public function createBookmark(string $url): ?Bookmark {
         try {
+            $url = Uri::createFromUriString($url);
             $scraper = new SiteInfoScraper($url);
         } catch (NetworkException $e) {
             Log::info("URLに接続できない {$url}");
