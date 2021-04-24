@@ -4,8 +4,8 @@ require_once(__DIR__ . '/../www/inc/autoload.php');
 
 use Hysryt\Bookmark\Framework\Log\FileLogger;
 use Hysryt\Bookmark\Log\Log;
-use Hysryt\Bookmark\Model\BookmarkCreator;
 use Hysryt\Bookmark\Repository\BookmarkFileRepository;
+use Hysryt\Bookmark\Service\BookmarkService;
 
 try {
 	// ログ設定
@@ -14,8 +14,8 @@ try {
 
 	// URLからBookmark情報取得
 	$url = 'https://github.com/';
-	$bookmarkCreator = new BookmarkCreator();
-	$bookmark = $bookmarkCreator->create($url);
+	$service = new BookmarkService(__DIR__ . '/thumbnail', 400, 210);
+	$bookmark = $service->createBookmark($url);
 
 	// 保存
 	$dataFilepath = __DIR__ . '/../www/bookmarks';
