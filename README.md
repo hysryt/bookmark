@@ -23,6 +23,9 @@ POST /bookmarks/{id}/delete/ BookmarkController::delete
 - URLをstringではなくUriインスタンスにする
 - BookmarkView::hasThumbnail()
 - createBookmark(string) -> createBookmark(Uri)
+- noindex対応
+- SiteInfoScraperのgetTitle/getDescriptionはOGPから取得しないように変更
+- HttpClient（PSR-18）
 
 - HtmlHttpDownloader
   - download(): HtmlDocument
