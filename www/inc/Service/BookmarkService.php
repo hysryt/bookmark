@@ -8,6 +8,7 @@ use Hysryt\Bookmark\Framework\Http\Uri;
 use Hysryt\Bookmark\Log\Log;
 use Hysryt\Bookmark\Model\Bookmark;
 use Hysryt\Bookmark\Model\SiteInfoScraper;
+use Psr\Http\Client\ClientInterface;
 
 class BookmarkService {
     /** サムネイル画像を保存するディレクトリ */
@@ -24,10 +25,11 @@ class BookmarkService {
      * 
      * @param string $thumbnailDir サムネイル画像を保存するディレクトリ
      */
-    public function __construct(string $thumbnailDir, int $thumbnailWidth, int $thumbnailHeight) {
+    public function __construct(string $thumbnailDir, int $thumbnailWidth, int $thumbnailHeight, ClientInterface $client) {
         $this->thumbnailDir = $thumbnailDir;
         $this->thumbnailWidth = $thumbnailWidth;
         $this->thumbnailHeight = $thumbnailHeight;
+        $this->client = $client;
     }
 
     /**
@@ -41,7 +43,7 @@ class BookmarkService {
      */
     public function createBookmark(Uri $url): ?Bookmark {
         try {
-            $scraper = new SiteInfoScraper($url);
+            $scraper = new SiteInfoScraper($url, $this->client);
         } catch (NetworkException $e) {
             Log::info("URLに接続できない {$url}");
             return null;

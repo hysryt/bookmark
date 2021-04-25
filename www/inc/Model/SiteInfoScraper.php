@@ -9,15 +9,16 @@ use Hysryt\Bookmark\Framework\Exception\PermissionDeniedException;
 use Hysryt\Bookmark\Framework\Exception\NotFoundException;
 use LogicException;
 use Exception;
-use Hysryt\Bookmark\Framework\Http\HttpClient;
 use Hysryt\Bookmark\Framework\Http\Request;
 use Hysryt\Bookmark\Framework\Http\Uri;
+use Psr\Http\Client\ClientInterface;
 
 /**
  * サイト情報をスクレイピングするクラス
  */
 class SiteInfoScraper {
 	private Uri $url;
+	private ClientInterface $client;
 	private ?string $title;
 	private ?string $description;
 	private string $html;
@@ -27,11 +28,13 @@ class SiteInfoScraper {
 	 * コンストラクタ
 	 *
 	 * @param Uri $url
+	 * @param ClientInterface $client;
 	 * @throws NetworkException - ネットワークエラー
 	 * @throws NotSupportedException - URLから取得したデータが未対応のファイル形式
 	 */
-	public function __construct(Uri $url) {
+	public function __construct(Uri $url, ClientInterface $client) {
 		$this->url = $url;
+		$this->client = $client;
 
 		Log::info('取得 ' . $this->url);
 		$data = $this->fetchData($this->url);
@@ -55,8 +58,7 @@ class SiteInfoScraper {
 	private function fetchData(Uri $url): string {
 		$request = new Request([],[],[],[],[],[]);
 		$request = $request->withUri($url);
-		$client = new HttpClient();
-		$response = $client->sendRequest($request);
+		$response = $this->client->sendRequest($request);
 
 		return $response->getBody()->getContents();
 	}
@@ -177,8 +179,7 @@ class SiteInfoScraper {
 		
 		$request = new Request([],[],[],[],[],[]);
 		$request = $request->withUri(Uri::createFromUriString($imageUrl));
-		$client = new HttpClient();
-		$response = $client->sendRequest($request);
+		$response = $this->client->sendRequest($request);
 		if ($response->getStatusCode() !== 200) {
 			// ネットワークエラーまたは4xx,5xxエラー
 			throw new NetworkException('ネットワークエラー （' . $imageUrl . '）');

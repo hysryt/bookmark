@@ -7,6 +7,7 @@ use Hysryt\Bookmark\Framework\Container\Container;
 use Hysryt\Bookmark\Framework\View\TemplateEngine;
 use Hysryt\Bookmark\Controller\BookmarkController;
 use Hysryt\Bookmark\Controller\NotFoundController;
+use Hysryt\Bookmark\Framework\Http\HttpClient;
 use Hysryt\Bookmark\Framework\Router\PermalinkFactory;
 use Hysryt\Bookmark\Framework\Router\Router;
 use Hysryt\Bookmark\Framework\Router\RouterConfig;
@@ -57,7 +58,8 @@ class ContainerFactory {
             return new BookmarkService(
                 $con->get('config')->get('thumbnail.dir'),
                 $con->get('config')->get('thumbnail.width'),
-                $con->get('config')->get('thumbnail.height')
+                $con->get('config')->get('thumbnail.height'),
+                new HttpClient()
             );
         });
         
