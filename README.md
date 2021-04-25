@@ -26,6 +26,10 @@ POST /bookmarks/{id}/delete/ BookmarkController::delete
 - noindex対応
 - SiteInfoScraperのgetTitle/getDescriptionはOGPから取得しないように変更
 - HttpClient（PSR-18）
+  - リダイレクトが必要な場合はどうするか
+  - 何秒でタイムアウトするか
+  - めちゃくちゃ重いサイトの場合はどうするか
+- new Request([],[],[],[],[],[]) -> new Request()
 
 - HtmlHttpDownloader
   - download(): HtmlDocument

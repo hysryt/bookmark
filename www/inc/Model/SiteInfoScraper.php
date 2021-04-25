@@ -9,6 +9,8 @@ use Hysryt\Bookmark\Framework\Exception\PermissionDeniedException;
 use Hysryt\Bookmark\Framework\Exception\NotFoundException;
 use LogicException;
 use Exception;
+use Hysryt\Bookmark\Framework\Http\HttpClient;
+use Hysryt\Bookmark\Framework\Http\Request;
 use Hysryt\Bookmark\Framework\Http\Uri;
 
 /**
@@ -51,16 +53,12 @@ class SiteInfoScraper {
 	 * @return string
 	 */
 	private function fetchData(Uri $url): string {
-		// 404がエラーとなるのを抑制
-		$context = stream_context_create();
-		stream_context_set_option($context, 'http', 'ignore_errors', true);
+		$request = new Request([],[],[],[],[],[]);
+		$request = $request->withUri($url);
+		$client = new HttpClient();
+		$response = $client->sendRequest($request);
 
-		$data = file_get_contents((string) $url, false, $context);
-		if ($data === false) {
-			throw new NetworkException('network error');
-		}
-
-		return $data;
+		return $response->getBody()->getContents();
 	}
 
 	/**
@@ -176,11 +174,16 @@ class SiteInfoScraper {
 	 */
 	private function downloadOriginalOgpImage($distDir): string {
 		$imageUrl = $this->ogp->getImage();
-		$originalImage = file_get_contents($imageUrl);
-		if ($originalImage === false) {
+		
+		$request = new Request([],[],[],[],[],[]);
+		$request = $request->withUri(Uri::createFromUriString($imageUrl));
+		$client = new HttpClient();
+		$response = $client->sendRequest($request);
+		if ($response->getStatusCode() !== 200) {
 			// ネットワークエラーまたは4xx,5xxエラー
 			throw new NetworkException('ネットワークエラー （' . $imageUrl . '）');
 		}
+		$originalImage = $response->getBody()->getContents();
 
 		$hash = sha1($originalImage);
 		$originalFilename = 'orig-' . $hash;
