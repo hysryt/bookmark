@@ -35,13 +35,12 @@ class BookmarkService {
      * $url に接続できないなどの理由で生成できない場合は null を返す。
      * $url で指定したサイトがHTML形式でない場合は NotSupportedException 例外を投げる。
      * 
-     * @param string $url
+     * @param Uri $url
      * @return ?Bookmark
      * @throws NotSupportedException
      */
-    public function createBookmark(string $url): ?Bookmark {
+    public function createBookmark(Uri $url): ?Bookmark {
         try {
-            $url = Uri::createFromUriString($url);
             $scraper = new SiteInfoScraper($url);
         } catch (NetworkException $e) {
             Log::info("URLに接続できない {$url}");

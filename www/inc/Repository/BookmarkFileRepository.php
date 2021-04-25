@@ -4,8 +4,10 @@ namespace Hysryt\Bookmark\Repository;
 
 use Hysryt\Bookmark\Model\Bookmark;
 use Hysryt\Bookmark\Model\BookmarkList;
+use Hysryt\Bookmark\Framework\Http\Uri;
 use ErrorException;
-use Hysryt\Bookmark\BookmarkFactory;
+use InvalidArgumentException;
+use RuntimeException;
 
 class BookmarkFileRepository implements BookmarkRepositoryInterface {
 	private string $filepath;
@@ -169,7 +171,11 @@ class BookmarkFileRepository implements BookmarkRepositoryInterface {
 		$aryList = unserialize($serializedData);
 		$list = new BookmarkList();
 		foreach ($aryList as $aryBookmark) {
-			$bookmark = $this->createBookmarkFromArray($aryBookmark);
+			try {
+				$bookmark = $this->createBookmarkFromArray($aryBookmark);
+			} catch(InvalidArgumentException $e) {
+				throw new RuntimeException('不正なデータがあります', 0, $e);
+			}
 			$list->append($bookmark);
 		}
 		return $list;
@@ -221,10 +227,14 @@ class BookmarkFileRepository implements BookmarkRepositoryInterface {
 	 * @return Bookmark
 	 */
     private function createBookmarkFromArray(array $data): Bookmark {
-        $id = isset($data['id']) ? intval($data['id']) : null;
-        $url = isset($data['url']) ? $data['url'] : null;
-		$title = isset($data['title']) ? $data['title'] : null;
-		$description = isset($data['description']) ? $data['description'] : null;
+		if (!isset($data['id']) || !isset($data['url']) || !isset($data['title']) || !isset($data['description'])) {
+			throw new InvalidArgumentException();
+		}
+
+        $id = intval($data['id']);
+		$url = Uri::createFromUriString($data['url']);
+		$title = $data['title'];
+		$description = $data['description'];
 		$thumbnailFilename = isset($data['thumbnail']) ? $data['thumbnail'] : null;
 		$bookmark = new Bookmark($url, $title, $description, $thumbnailFilename, $id);
 		return $bookmark;
@@ -239,7 +249,7 @@ class BookmarkFileRepository implements BookmarkRepositoryInterface {
 	private function createArrayFromBookmark(Bookmark $bookmark): array {
 		return [
 			'id' => $bookmark->getId(),
-			'url' => $bookmark->getUrl(),
+			'url' => (string) $bookmark->getUrl(),
 			'title' => $bookmark->getTitle(),
 			'description' => $bookmark->getDescription(),
 			'thumbnail' => $bookmark->getThumbnail(),

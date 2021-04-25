@@ -2,9 +2,11 @@
 
 namespace Hysryt\Bookmark\Model;
 
+use Hysryt\Bookmark\Framework\Http\Uri;
+
 class Bookmark {
 	private ?int $id;
-	private string $url;
+	private Uri $url;
 	private string $title;
 	private string $description;
 	private ?string $thumbnailFilename;
@@ -12,7 +14,7 @@ class Bookmark {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param string $url
+	 * @param Uri $url
 	 * @param string $title
 	 * @param string $description
 	 * @param string $thumbnailFilename
@@ -20,7 +22,7 @@ class Bookmark {
 	 * @param int|null $id
 	 */
 	public function __construct(
-		string $url,
+		Uri $url,
 		string $title,
 		string $description,
 		?string $thumbnailFilename,
@@ -45,9 +47,9 @@ class Bookmark {
 	/**
 	 * URLを取得
 	 *
-	 * @return string
+	 * @return Uri
 	 */
-	public function getUrl(): string {
+	public function getUrl(): Uri {
 		return $this->url;
 	}
 

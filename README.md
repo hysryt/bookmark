@@ -20,7 +20,6 @@ POST /bookmarks/{id}/delete/ BookmarkController::delete
 - phpcs
 - file_get_contentsをcurlに変更
   - ネットアクセス自体別途クラスをつくって隠蔽化？
-- URLをstringではなくUriインスタンスにする
 - BookmarkView::hasThumbnail()
 - createBookmark(string) -> createBookmark(Uri)
 - noindex対応
