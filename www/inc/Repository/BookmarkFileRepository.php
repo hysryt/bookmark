@@ -226,19 +226,19 @@ class BookmarkFileRepository implements BookmarkRepositoryInterface {
 	 * @param array $data
 	 * @return Bookmark
 	 */
-    private function createBookmarkFromArray(array $data): Bookmark {
+	private function createBookmarkFromArray(array $data): Bookmark {
 		if (!isset($data['id']) || !isset($data['url']) || !isset($data['title']) || !isset($data['description'])) {
 			throw new InvalidArgumentException();
 		}
 
-        $id = intval($data['id']);
+		$id = intval($data['id']);
 		$url = Uri::createFromUriString($data['url']);
 		$title = $data['title'];
 		$description = $data['description'];
 		$thumbnailFilename = isset($data['thumbnail']) ? $data['thumbnail'] : null;
 		$bookmark = new Bookmark($url, $title, $description, $thumbnailFilename, $id);
 		return $bookmark;
-    }
+	}
 
 	/**
 	 * Bookmarkインスタンスから配列データを作成
