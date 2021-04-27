@@ -1,6 +1,6 @@
 <?php
 
-namespace Hysryt\Bookmark\Framework\Http;
+namespace Hysryt\Bookmark\Lib\HttpMessage;
 
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;

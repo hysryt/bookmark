@@ -3,8 +3,8 @@
 namespace Hysryt\Bookmark\Framework;
 
 use Hysryt\Bookmark\Framework\Emitter\EmitterInterface;
-use Hysryt\Bookmark\Framework\Http\Request;
 use Hysryt\Bookmark\Framework\Router\Router;
+use Hysryt\Bookmark\Lib\HttpMessage\Request;
 
 class App {
     private EmitterInterface $emitter;

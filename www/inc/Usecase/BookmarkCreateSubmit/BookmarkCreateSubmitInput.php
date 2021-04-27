@@ -2,8 +2,8 @@
 
 namespace Hysryt\Bookmark\UseCase\BookmarkCreateSubmit;
 
-use Hysryt\Bookmark\Framework\Http\Uri;
 use Hysryt\Bookmark\Framework\Validation\ValidationResult;
+use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;

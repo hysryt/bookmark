@@ -3,9 +3,9 @@
 namespace Hysryt\Bookmark\Controller;
 
 use Exception;
-use Hysryt\Bookmark\Framework\Http\Response;
 use Hysryt\Bookmark\Framework\Router\PermalinkFactory;
 use Hysryt\Bookmark\Framework\View\TemplateEngineInterface;
+use Hysryt\Bookmark\Lib\HttpMessage\Response;
 use Hysryt\Bookmark\Repository\BookmarkRepositoryInterface;
 use Hysryt\Bookmark\Repository\RepositoryException;
 use Hysryt\Bookmark\Service\BookmarkService;

@@ -3,7 +3,7 @@
 namespace Hysryt\Bookmark\Test;
 
 use Exception;
-use Hysryt\Bookmark\Framework\Http\Request;
+use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use InvalidArgumentException;
 
 require_once(__DIR__ . '/../www/inc/autoload.php');

@@ -4,12 +4,12 @@ namespace Hysryt\Bookmark\Test;
 
 use Hysryt\Bookmark\Controller\BookmarkController;
 use Hysryt\Bookmark\Framework\Container\Container;
-use Hysryt\Bookmark\Framework\Http\Request;
 use Hysryt\Bookmark\Framework\Router\PermalinkFactory;
 use Hysryt\Bookmark\Framework\Router\RouteList;
 use Hysryt\Bookmark\Framework\Router\Router;
 use Hysryt\Bookmark\Framework\Router\RouterConfig;
 use Hysryt\Bookmark\Framework\View\TemplateEngine;
+use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use Hysryt\Bookmark\Repository\BookmarkFileRepository;
 use Hysryt\Bookmark\ViewObject\BookmarkViewFactory;
 

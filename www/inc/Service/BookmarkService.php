@@ -4,7 +4,7 @@ namespace Hysryt\Bookmark\Service;
 
 use Hysryt\Bookmark\Framework\Exception\NetworkException;
 use Hysryt\Bookmark\Framework\Exception\NotSupportedException;
-use Hysryt\Bookmark\Framework\Http\Uri;
+use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 use Hysryt\Bookmark\Log\Log;
 use Hysryt\Bookmark\Model\Bookmark;
 use Hysryt\Bookmark\Model\SiteInfoScraper;

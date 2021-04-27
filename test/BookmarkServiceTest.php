@@ -4,7 +4,7 @@ namespace Hysryt\Bookmark\Test;
 
 use Exception;
 use Hysryt\Bookmark\Framework\Exception\NotSupportedException;
-use Hysryt\Bookmark\Framework\Http\Uri;
+use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 use Hysryt\Bookmark\Service\BookmarkService;
 
 require_once(__DIR__ . '/../www/inc/autoload.php');

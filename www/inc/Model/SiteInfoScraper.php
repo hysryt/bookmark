@@ -9,8 +9,8 @@ use Hysryt\Bookmark\Framework\Exception\PermissionDeniedException;
 use Hysryt\Bookmark\Framework\Exception\NotFoundException;
 use LogicException;
 use Exception;
-use Hysryt\Bookmark\Framework\Http\Request;
-use Hysryt\Bookmark\Framework\Http\Uri;
+use Hysryt\Bookmark\Lib\HttpMessage\Request;
+use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 use Psr\Http\Client\ClientInterface;
 
 /**

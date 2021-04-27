@@ -4,8 +4,8 @@ namespace Hysryt\Bookmark\Repository;
 
 use Hysryt\Bookmark\Model\Bookmark;
 use Hysryt\Bookmark\Model\BookmarkList;
-use Hysryt\Bookmark\Framework\Http\Uri;
 use ErrorException;
+use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 use InvalidArgumentException;
 use RuntimeException;
 

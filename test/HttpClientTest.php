@@ -3,8 +3,8 @@
 namespace Hysryt\Bookmark\Test;
 
 use Hysryt\Bookmark\Framework\Http\HttpClient;
-use Hysryt\Bookmark\Framework\Http\Request;
-use Hysryt\Bookmark\Framework\Http\Uri;
+use Hysryt\Bookmark\Lib\HttpMessage\Request;
+use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 
 require_once(__DIR__ . '/../www/inc/autoload.php');
 

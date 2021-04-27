@@ -2,7 +2,7 @@
 
 namespace Hysryt\Bookmark\Model;
 
-use Hysryt\Bookmark\Framework\Http\Uri;
+use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 
 class Bookmark {
 	private ?int $id;

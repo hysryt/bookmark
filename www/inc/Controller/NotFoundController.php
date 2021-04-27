@@ -2,7 +2,7 @@
 
 namespace Hysryt\Bookmark\Controller;
 
-use Hysryt\Bookmark\Framework\Http\Response;
+use Hysryt\Bookmark\Lib\HttpMessage\Response;
 use Psr\Http\Message\ServerRequestInterface;
 
 class NotFoundController {

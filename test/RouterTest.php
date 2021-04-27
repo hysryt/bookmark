@@ -5,11 +5,11 @@ namespace Hysryt\Bookmark\Test;
 require_once(__DIR__ . '/../www/inc/autoload.php');
 
 use Hysryt\Bookmark\Framework\Container\Container;
-use Hysryt\Bookmark\Framework\Http\Request;
-use Hysryt\Bookmark\Framework\Http\Response;
-use Hysryt\Bookmark\Framework\Http\Uri;
 use Hysryt\Bookmark\Framework\Router\Router;
 use Hysryt\Bookmark\Framework\Router\RouterConfig;
+use Hysryt\Bookmark\Lib\HttpMessage\Request;
+use Hysryt\Bookmark\Lib\HttpMessage\Response;
+use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

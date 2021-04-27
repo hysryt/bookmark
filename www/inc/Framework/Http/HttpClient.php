@@ -2,7 +2,9 @@
 
 namespace Hysryt\Bookmark\Framework\Http;
 
-use Exception;
+use Hysryt\Bookmark\Lib\HttpMessage\NetworkException;
+use Hysryt\Bookmark\Lib\HttpMessage\Response;
+use Hysryt\Bookmark\Lib\HttpMessage\StringStream;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
