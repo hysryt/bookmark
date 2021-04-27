@@ -3,7 +3,7 @@
 namespace Hysryt\Bookmark\Controller;
 
 use Exception;
-use Hysryt\Bookmark\Framework\Router\PermalinkFactory;
+use Hysryt\Bookmark\Framework\Router\PermalinkFactoryInterface;
 use Hysryt\Bookmark\Framework\View\TemplateEngineInterface;
 use Hysryt\Bookmark\Lib\HttpMessage\Response;
 use Hysryt\Bookmark\Repository\BookmarkRepositoryInterface;
@@ -16,14 +16,14 @@ use Hysryt\Bookmark\ViewObject\BookmarkViewFactory;
 use Psr\Http\Message\ServerRequestInterface;
 
 class BookmarkController {
-	private PermalinkFactory $permalinkFactory;
+	private PermalinkFactoryInterface $permalinkFactory;
 	private TemplateEngineInterface $templateEngine;
 	private int $numPerPage;
 	private BookmarkRepositoryInterface $repository;
 	private BookmarkViewFactory $bookmarkViewFactory;
 	private BookmarkService $bookmarkService;
 
-	public function __construct(PermalinkFactory $permalinkFactory, TemplateEngineInterface $templateEngine, int $numPerPage, BookmarkRepositoryInterface $repository, BookmarkViewFactory $bookmarkViewFactory, BookmarkService $bookmarkService) {
+	public function __construct(PermalinkFactoryInterface $permalinkFactory, TemplateEngineInterface $templateEngine, int $numPerPage, BookmarkRepositoryInterface $repository, BookmarkViewFactory $bookmarkViewFactory, BookmarkService $bookmarkService) {
 		$this->permalinkFactory = $permalinkFactory;
 		$this->templateEngine = $templateEngine;
 		$this->numPerPage = $numPerPage;

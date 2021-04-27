@@ -2,12 +2,12 @@
 
 namespace Hysryt\Bookmark\ViewObject;
 
-use Hysryt\Bookmark\Framework\Router\PermalinkFactory;
+use Hysryt\Bookmark\Framework\Router\PermalinkFactoryInterface;
 use Hysryt\Bookmark\Model\Bookmark;
 
 class BookmarkViewFactory {
     private string $thumbnailDirUrl;
-    private PermalinkFactory $permalinkFactory;
+    private PermalinkFactoryInterface $permalinkFactory;
 
     /**
      * コンストラクタ
@@ -15,7 +15,7 @@ class BookmarkViewFactory {
      * @param string $thumbnailDirUrl
      * @param PermalinkFactory $permalinkFactory
      */
-    public function __construct(string $thumbnailDirUrl, PermalinkFactory $permalinkFactory) {
+    public function __construct(string $thumbnailDirUrl, PermalinkFactoryInterface $permalinkFactory) {
         $this->thumbnailDirUrl = rtrim($thumbnailDirUrl, '/');
         $this->permalinkFactory = $permalinkFactory;
     }

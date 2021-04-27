@@ -4,7 +4,7 @@ namespace Hysryt\Bookmark\Framework\Router;
 
 use LogicException;
 
-class PermalinkFactory {
+class PermalinkFactory implements PermalinkFactoryInterface {
     private string $baseUrl;
     private RouteList $routeList;
 

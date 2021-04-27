@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 class Router {
     private ContainerInterface $container;
     private RouteList $routeList;
-    private NotFoundRoute $notFoundRoute;
+    private ?NotFoundRoute $notFoundRoute;
 
     public function __construct(ContainerInterface $container, RouterConfig $routerConfig) {
         $this->container = $container;
