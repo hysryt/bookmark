@@ -25,6 +25,21 @@ class Request implements ServerRequestInterface {
 		$this->uri = $this->createUri();
 	}
 
+	/**
+	 * Requestインスタンスを生成
+	 * 
+	 * @param string $method
+	 * @param string $url
+	 * @return Request
+	 */
+	public static function create(string $method, string $url) {
+		$request = new Request([
+			'REQUEST_METHOD' => $method,
+		],[],[],[],[],[]);
+		$request = $request->withUri(Uri::createFromUriString($url));
+		return $request;
+	}
+
 	public function getServerParams() {
 		return $this->serverParams;
 	}
