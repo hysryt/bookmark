@@ -2,6 +2,7 @@
 
 namespace Hysryt\Bookmark\Lib\HttpMessage;
 
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -48,7 +49,14 @@ class Response implements ResponseInterface {
 		$this->statusCode = $statusCode;
 		$this->reasonPhrase = $reasonPhrase;
 		$this->headers = $headers;
-		$this->body = $body;
+		if ($body instanceof StreamInterface) {
+			$this->body = $body;
+		} else if (is_string($body)) {
+			$this->body = new StringStream();
+			$this->body->write($body);
+		} else {
+			throw new InvalidArgumentException();
+		}
 	}
 
 	public function getStatusCode(): int {
