@@ -95,7 +95,7 @@ class Response implements ResponseInterface {
 	}
 
 	public function getHeader($name) {
-		foreach($this->header as $headerName => $headerValue) {
+		foreach($this->headers as $headerName => $headerValue) {
 			if (strtolower($name) === strtolower($headerName)) {
 				return $headerValue;
 			}
@@ -109,7 +109,8 @@ class Response implements ResponseInterface {
 		}
 		$newResponse = clone $this;
 		$storedHeaderName = $this->getStoredHeaderName($name);
-		$newResponse->headers[$storedHeaderName] = $value;
+		$name = ($storedHeaderName) ? $storedHeaderName : $name;
+		$newResponse->headers[$name] = $value;
 		return $newResponse;
 	}
 
@@ -136,7 +137,7 @@ class Response implements ResponseInterface {
 	}
 
 	private function getStoredHeaderName($name) {
-		foreach ($this->header as $headerName => $headerValue) {
+		foreach ($this->headers as $headerName => $headerValue) {
 			if (strtolower($headerName) === strtolower($name)) {
 				return $headerName;
 			}
