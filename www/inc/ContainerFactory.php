@@ -7,14 +7,17 @@ use Hysryt\Bookmark\Framework\Container\Container;
 use Hysryt\Bookmark\Framework\View\TemplateEngine;
 use Hysryt\Bookmark\Controller\BookmarkController;
 use Hysryt\Bookmark\Controller\NotFoundController;
-use Hysryt\Bookmark\Framework\Http\HttpClient;
 use Hysryt\Bookmark\Framework\Router\PermalinkFactory;
 use Hysryt\Bookmark\Framework\Router\Router;
 use Hysryt\Bookmark\Framework\Router\RouterConfig;
+use Hysryt\Bookmark\Lib\FollowLocationHttpClient\Client as FollowLocationClient;
+use Hysryt\Bookmark\Lib\HttpClient\Client as HttpClient;
+use Hysryt\Bookmark\Lib\HttpMessage\ResponseFactory;
 use Hysryt\Bookmark\Repository\BookmarkFileRepository;
 use Hysryt\Bookmark\Service\BookmarkService;
 use Hysryt\Bookmark\ViewObject\BookmarkViewFactory;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 class ContainerFactory {
     public static function create(Config $config, RouterConfig $routerConfig): ContainerInterface {
@@ -36,6 +39,11 @@ class ContainerFactory {
                 $conn->get('config')->get('siteurl'),
                 $conn->get('routerConfig')->getRouteList()
             );
+        });
+
+        // Factory
+        $container->setClosure(ResponseFactoryInterface::class, function($conn) {
+            return new ResponseFactory();
         });
         
         // Controller
@@ -59,7 +67,9 @@ class ContainerFactory {
                 $con->get('config')->get('thumbnail.dir'),
                 $con->get('config')->get('thumbnail.width'),
                 $con->get('config')->get('thumbnail.height'),
-                new HttpClient()
+                new FollowLocationClient(new HttpClient(
+                    $con->get(ResponseFactoryInterface::class)
+                ), $con->get('config')->get('max_redirect'))
             );
         });
         

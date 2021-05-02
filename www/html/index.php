@@ -21,6 +21,7 @@ $config = new Config([
     'thumbnail.dir' => '/var/www/html/thumbnails',
     'thumbnail.width' => 400,
     'thumbnail.height' => 210,
+    'max_redirect' => 5,
 ]);
 
 // ルート設定
