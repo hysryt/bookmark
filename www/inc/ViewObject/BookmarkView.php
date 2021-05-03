@@ -31,6 +31,10 @@ class BookmarkView {
         return $this->bookmark->getDescription();
     }
 
+    public function hasThumbnailUrl(): bool {
+        return !!($this->thumbnailUrl);
+    }
+
     public function getThumbnailUrl(): string {
         return $this->thumbnailUrl;
     }

@@ -6,7 +6,6 @@
 - Configを設定ファイル切り離す
 - データベース接続
 - phpcs
-- BookmarkView::hasThumbnail()
 - noindex対応
 - SiteInfoScraperのgetTitle/getDescriptionはOGPから取得しないように変更
 
