@@ -9,9 +9,14 @@ use Hysryt\Bookmark\Framework\Exception\PermissionDeniedException;
 use Hysryt\Bookmark\Framework\Exception\NotFoundException;
 use LogicException;
 use Exception;
+use Hysryt\Bookmark\Lib\Html\HtmlDocument;
+use Hysryt\Bookmark\Lib\Html\HtmlDocumentInterface;
+use Hysryt\Bookmark\Lib\Html\OpenGraphInterface;
 use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use Hysryt\Bookmark\Lib\HttpMessage\Uri;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
+use RuntimeException;
 
 /**
  * サイト情報をスクレイピングするクラス
@@ -19,10 +24,7 @@ use Psr\Http\Client\ClientInterface;
 class SiteInfoScraper {
 	private Uri $url;
 	private ClientInterface $client;
-	private ?string $title;
-	private ?string $description;
-	private string $html;
-	private ?OpenGraph $ogp = null;
+	private HtmlDocumentInterface $html;
 
 	/**
 	 * コンストラクタ
@@ -30,75 +32,42 @@ class SiteInfoScraper {
 	 * @param Uri $url
 	 * @param ClientInterface $client;
 	 * @throws NetworkException - ネットワークエラー
-	 * @throws NotSupportedException - URLから取得したデータが未対応のファイル形式
+	 * @throws NotSupportedException - サポートしないMIME-Type
 	 */
 	public function __construct(Uri $url, ClientInterface $client) {
-		$this->url = $url;
+		Log::info('取得 ' . $url);
+
+		$this->url    = $url;
 		$this->client = $client;
-
-		Log::info('取得 ' . $this->url);
-		$data = $this->fetchData($this->url);
-
-		// HTML形式以外は拒否
-		$mimeType = $this->getMimeType($data);
-		if ($mimeType !== 'text/html') {
-			Log::warning('サポートしないMIME-Type（' . $mimeType . '）' . $this->url);
-			throw new NotSupportedException('unsupported mime-type: ' . $mimeType);
-		}
-
-		$this->html = $data;
-		$this->parse();
+		$this->html   = $this->downloadHtml();
 	}
 
 	/**
-	 * URLからデータを取得
-	 * @param Uri $uri
-	 * @return string
+	 * @throws NetworkException - ネットワークエラー
+	 * @throws NotSupportedException - サポートしないMIME-Type
 	 */
-	private function fetchData(Uri $url): string {
-		$request = new Request([],[],[],[],[],[]);
-		$request = $request->withUri($url);
-		$response = $this->client->sendRequest($request);
-
-		return $response->getBody()->getContents();
-	}
-
-	/**
-	 * MIME Type取得
-	 *
-	 * @param string $data
-	 * @return void
-	 */
-	private function getMimeType(string $data) {
-		$fileInfo = new \finfo(FILEINFO_MIME_TYPE);
-		$mimeType = $fileInfo->buffer($data);
-		return $mimeType;
-	}
-
-	/**
-	 * HTMLから情報を取得
-	 *
-	 * @return void
-	 */
-	private function parse() {
+	private function downloadHtml() {
 		try {
-			$parser = new HtmlParser($this->html);
-			$this->ogp = $parser->parseOgp();
-			$this->title = $parser->parseTitle();
-			$this->description = $parser->parseMetaDescription();
-		} catch (Exception $e) {
-			Log::warning('パース失敗 ' . $this->url, array(), $e);
-			throw $e;
+			$request = Request::create('GET', $this->url);
+			$response = $this->client->sendRequest($request);
+			$htmlDocument = new HtmlDocument($response->getBody()->getContents());
+			return $htmlDocument;
+
+		} catch (ClientExceptionInterface $e) {
+			throw new NetworkException($e->getMessage(), 0, $e);
+
+		} catch (RuntimeException $e) {
+			throw new NotSupportedException($e->getMessage(), 0, $e);
 		}
 	}
 
 	/**
 	 * OGP情報を取得する
 	 *
-	 * @return OpenGraph
+	 * @return OpenGraphInterface
 	 */
-	public function getOgp(): OpenGraph {
-		return $this->ogp;
+	public function getOgp(): OpenGraphInterface {
+		return $this->html->parseOgp();
 	}
 
 	/**
@@ -107,7 +76,7 @@ class SiteInfoScraper {
 	 * @return bool
 	 */
 	public function hasThumbnailPicture(): bool {
-		return $this->ogp->hasImage();
+		return $this->html->parseOgp()->getImage() !== null;
 	}
 
 	/**
@@ -115,8 +84,8 @@ class SiteInfoScraper {
 	 *
 	 * @return string
 	 */
-	public function getThumbnailPictureUrl(): bool {
-		return $this->ogp->getImage();
+	public function getThumbnailPictureUrl(): string {
+		return $this->html->parseOgp()->getImage();
 	}
 
 	/**
@@ -137,7 +106,7 @@ class SiteInfoScraper {
 		}
 
 		// OGP画像が設定されていない
-		if (! $this->ogp->hasImage()) {
+		if (! $this->hasThumbnailPicture()) {
 			throw new LogicException('downloadThumbnailPictureの前にhasThumbnailPictureで画像があるかどうか確認する必要がある');
 		}
 
@@ -175,7 +144,7 @@ class SiteInfoScraper {
 	 * @throws NotSupportedException
 	 */
 	private function downloadOriginalOgpImage($distDir): string {
-		$imageUrl = $this->ogp->getImage();
+		$imageUrl = $this->html->parseOgp()->getImage();
 		
 		$request = new Request([],[],[],[],[],[]);
 		$request = $request->withUri(Uri::createFromUriString($imageUrl));
@@ -252,10 +221,10 @@ class SiteInfoScraper {
 	 * @return ?string
 	 */
 	public function getTitle(): ?string {
-		if ($this->ogp && $this->ogp->getTitle()) {
-			return $this->ogp->getTitle();
+		if ($this->html->parseOgp() && $this->html->parseOgp()->getTitle()) {
+			return $this->html->parseOgp()->getTitle();
 		}
-		return $this->title;
+		return $this->html->parseTitle();
 	}
 
 	/**
@@ -267,9 +236,9 @@ class SiteInfoScraper {
 	 * @return ?string
 	 */
 	public function getDescription(): ?string {
-		if ($this->ogp && $this->ogp->getDescription()) {
-			return $this->ogp->getDescription();
+		if ($this->html->parseOgp() && $this->html->parseOgp()->getDescription()) {
+			return $this->html->parseOgp()->getDescription();
 		}
-		return $this->description;
+		return $this->html->parseDescription();
 	}
 }

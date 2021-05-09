@@ -5,20 +5,38 @@ namespace Hysryt\Bookmark\Lib\Html;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
+use RuntimeException;
 
 class HtmlDocument implements HtmlDocumentInterface {
+    private string $html;
     private DOMXPath $xpath;
 
+    /**
+     * @throws RuntimeException - サポートしないMIME-Type
+     */
     public function __construct(string $html) {
-        $doc = $this->createDOMDocument($html);
+        $this->html = $html;
+
+        $mimeType = $this->detectMimeType();
+        if ($mimeType !== 'text/html') {
+            throw new RuntimeException('unsupported mime-type: ' . $mimeType);
+        }
+
+        $doc = $this->createDOMDocument();
         $this->xpath = new DOMXPath($doc);
     }
 
-    private function createDOMDocument(string $html) {
+    private function detectMimeType() {
+		$fileInfo = new \finfo(FILEINFO_MIME_TYPE);
+		$mimeType = $fileInfo->buffer($this->html);
+		return $mimeType;
+    }
+
+    private function createDOMDocument() {
         $doc = new DOMDocument();
-        if ($html) {
+        if ($this->html) {
             $orig = libxml_use_internal_errors(true);
-            $doc->loadHTML($html);
+            $doc->loadHTML($this->html);
             libxml_use_internal_errors($orig);
         }
         return $doc;
