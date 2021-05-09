@@ -50,7 +50,7 @@ class ClientTest {
             'timeout' => 1,
         ]);
 
-        $request = Request::create('GET', 'https://hysryt.com/timeout.php');
+        $request = Request::create('GET', 'https://hysryt.com/httptest/timeout.php');
 
         try {
             $client->sendRequest($request);
