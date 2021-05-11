@@ -68,4 +68,10 @@ class Image implements ImageInterface {
             throw new RuntimeException('画像の保存に失敗：' . $filepath);
         }
     }
+
+    public function hash(): string {
+        ob_start();
+        imagejpeg($this->image);
+        return sha1(ob_get_clean());
+    }
 }
