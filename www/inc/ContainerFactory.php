@@ -14,6 +14,7 @@ use Hysryt\Bookmark\Lib\FollowLocationHttpClient\Client as FollowLocationClient;
 use Hysryt\Bookmark\Lib\HttpClient\Client as HttpClient;
 use Hysryt\Bookmark\Lib\HttpMessage\ResponseFactory;
 use Hysryt\Bookmark\Repository\BookmarkFileRepository;
+use Hysryt\Bookmark\Repository\ThumbnailRepository;
 use Hysryt\Bookmark\Service\BookmarkService;
 use Hysryt\Bookmark\ViewObject\BookmarkViewFactory;
 use Psr\Container\ContainerInterface;
@@ -64,9 +65,7 @@ class ContainerFactory {
         // Service
         $container->setClosure(BookmarkService::class, function($con) {
             return new BookmarkService(
-                $con->get('config')->get('thumbnail.dir'),
-                $con->get('config')->get('thumbnail.width'),
-                $con->get('config')->get('thumbnail.height'),
+                $con->get(ThumbnailRepository::class),
                 new FollowLocationClient(new HttpClient(
                     $con->get(ResponseFactoryInterface::class)
                 ), $con->get('config')->get('max_redirect'))
@@ -77,6 +76,13 @@ class ContainerFactory {
         $container->setClosure(BookmarkRepositoryInterface::class, function($con) {
             return new BookmarkFileRepository(
                 $con->get('config')->get('repository.filepath')
+            );
+        });
+        $container->setClosure(ThumbnailRepository::class, function($con) {
+            return new ThumbnailRepository(
+                $con->get('config')->get('thumbnail.dir'),
+                $con->get('config')->get('thumbnail.width'),
+                $con->get('config')->get('thumbnail.height')
             );
         });
 

@@ -11,27 +11,15 @@ use Hysryt\Bookmark\Lib\Image\ImageFactory;
 use Hysryt\Bookmark\Log\Log;
 use Hysryt\Bookmark\Model\Bookmark;
 use Hysryt\Bookmark\Model\SiteInfoScraper;
+use Hysryt\Bookmark\Repository\ThumbnailRepository;
 use Psr\Http\Client\ClientInterface;
 
 class BookmarkService {
-    /** サムネイル画像を保存するディレクトリ */
-    private string $thumbnailDir;
+    private ThumbnailRepository $thumbnailRepository;
+    private ClientInterface $client;
 
-    /** 保存するサムネイル画像の横幅 */
-    private int $thumbnailWidth;
-
-    /** 保存するサムネイル画像の高さ */
-    private int $thumbnailHeight;
-
-    /**
-     * コンストラクタ
-     * 
-     * @param string $thumbnailDir サムネイル画像を保存するディレクトリ
-     */
-    public function __construct(string $thumbnailDir, int $thumbnailWidth, int $thumbnailHeight, ClientInterface $client) {
-        $this->thumbnailDir = $thumbnailDir;
-        $this->thumbnailWidth = $thumbnailWidth;
-        $this->thumbnailHeight = $thumbnailHeight;
+    public function __construct(ThumbnailRepository $thumbnailRepository, ClientInterface $client) {
+        $this->thumbnailRepository = $thumbnailRepository;
         $this->client = $client;
     }
 
@@ -84,11 +72,7 @@ class BookmarkService {
         $request = Request::create('GET', $url);
         $response = $this->client->sendRequest($request);
         $image = ImageFactory::fromString($response->getBody()->getContents());
-        $image = $image->resize($this->thumbnailWidth, $this->thumbnailHeight);
-        $hash = $image->hash();
-        $filename = $hash . '.jpg';
-        $filepath = $this->thumbnailDir . DIRECTORY_SEPARATOR . $filename;
-        $image->saveAsJpeg($filepath);
+        $filename = $this->thumbnailRepository->save($image);
         return $filename;
     }
 }
