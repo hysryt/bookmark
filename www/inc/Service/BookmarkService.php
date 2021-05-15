@@ -2,9 +2,12 @@
 
 namespace Hysryt\Bookmark\Service;
 
+use Exception;
 use Hysryt\Bookmark\Framework\Exception\NetworkException;
 use Hysryt\Bookmark\Framework\Exception\NotSupportedException;
+use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use Hysryt\Bookmark\Lib\HttpMessage\Uri;
+use Hysryt\Bookmark\Lib\Image\ImageFactory;
 use Hysryt\Bookmark\Log\Log;
 use Hysryt\Bookmark\Model\Bookmark;
 use Hysryt\Bookmark\Model\SiteInfoScraper;
@@ -58,16 +61,34 @@ class BookmarkService {
 		$description = trim(preg_replace('/\s\s+/', ' ', $scraper->getDescription()));
 	
         // サムネイル画像がある場合はダウンロード
-		$thumbnailFilename = null;
-		if ( $scraper->hasThumbnailPicture() ) {
-			$thumbnailFilename = $scraper->downloadThumbnailPicture($this->thumbnailDir, $this->thumbnailWidth, $this->thumbnailHeight);
-			if ($thumbnailFilename === null) {
-				Log::info("画像取得失敗 {$scraper->getThumbnailPictureUrl()}");
-			}
-		}
+        try {
+            $thumbnailFilename = $this->downloadThumbnailIfExists($scraper);
+        } catch(Exception $e) {
+            Log::info("画像取得失敗 {$scraper->getThumbnailPictureUrl()}");
+        }
 
 		$bookmark = new Bookmark($url, $title, $description, $thumbnailFilename);
 
 		return $bookmark;
+    }
+
+    private function downloadThumbnailIfExists(SiteInfoScraper $scraper): ?string {
+        if ($scraper->hasThumbnailPicture()) {
+            $url = $scraper->getThumbnailPictureUrl();
+            return $this->downloadThumbnail($url);
+        }
+        return null;
+    }
+
+    private function downloadThumbnail(string $url): string {
+        $request = Request::create('GET', $url);
+        $response = $this->client->sendRequest($request);
+        $image = ImageFactory::fromString($response->getBody()->getContents());
+        $image = $image->resize($this->thumbnailWidth, $this->thumbnailHeight);
+        $hash = $image->hash();
+        $filename = $hash . '.jpg';
+        $filepath = $this->thumbnailDir . DIRECTORY_SEPARATOR . $filename;
+        $image->saveAsJpeg($filepath);
+        return $filename;
     }
 }

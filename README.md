@@ -7,7 +7,6 @@
 - データベース接続
 - phpcs
 - noindex対応
-- SiteInfoScraperのgetTitle/getDescriptionはOGPから取得しないように変更
 
 - HtmlHttpDownloader
   - download(): HtmlDocument
