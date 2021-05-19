@@ -2,12 +2,10 @@
 
 namespace Hysryt\Bookmark\Controller;
 
-use Exception;
 use Hysryt\Bookmark\Framework\Router\PermalinkFactoryInterface;
 use Hysryt\Bookmark\Framework\View\TemplateEngineInterface;
 use Hysryt\Bookmark\Lib\HttpMessage\Response;
 use Hysryt\Bookmark\Repository\BookmarkRepositoryInterface;
-use Hysryt\Bookmark\Repository\RepositoryException;
 use Hysryt\Bookmark\Service\BookmarkService;
 use Hysryt\Bookmark\UseCase\BookmarkIndex\BookmarkIndexInput;
 use Hysryt\Bookmark\UseCase\BookmarkCreateSubmit\BookmarkCreateSubmitInput;
@@ -109,17 +107,8 @@ class BookmarkController {
 			return Response::ok($body);
 		}
 
-		try {
-			$bookmark = $this->bookmarkService->createBookmark($input->getUrl());
-		} catch (Exception $e) {
-			// 失敗（URLから情報を取得できない）
-		}
-
-		try {
-			$bookmark = $this->repository->add($bookmark);
-		} catch (RepositoryException $e) {
-			// 失敗（リポジトリエラー）
-		}
+		$bookmark = $this->bookmarkService->createBookmark($input->getUrl());
+		$bookmark = $this->repository->add($bookmark);
 
 		$body = $this->templateEngine->render('bookmark.createSuccess.php', [
 			'bookmark' => $bookmark,

@@ -12,12 +12,15 @@ use Hysryt\Bookmark\Framework\Router\Router;
 use Hysryt\Bookmark\Framework\Router\RouterConfig;
 use Hysryt\Bookmark\Lib\FollowLocationHttpClient\Client as FollowLocationClient;
 use Hysryt\Bookmark\Lib\HttpClient\Client as HttpClient;
+use Hysryt\Bookmark\Lib\HttpMessage\RequestFactory;
 use Hysryt\Bookmark\Lib\HttpMessage\ResponseFactory;
+use Hysryt\Bookmark\Lib\ImageDownloader\ImageDownloader;
 use Hysryt\Bookmark\Repository\BookmarkFileRepository;
 use Hysryt\Bookmark\Repository\ThumbnailRepository;
 use Hysryt\Bookmark\Service\BookmarkService;
 use Hysryt\Bookmark\ViewObject\BookmarkViewFactory;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 
 class ContainerFactory {
@@ -43,6 +46,9 @@ class ContainerFactory {
         });
 
         // Factory
+        $container->setClosure(RequestFactoryInterface::class, function($conn) {
+            return new RequestFactory();
+        });
         $container->setClosure(ResponseFactoryInterface::class, function($conn) {
             return new ResponseFactory();
         });
@@ -68,7 +74,18 @@ class ContainerFactory {
                 $con->get(ThumbnailRepository::class),
                 new FollowLocationClient(new HttpClient(
                     $con->get(ResponseFactoryInterface::class)
-                ), $con->get('config')->get('max_redirect'))
+                ),$con->get('config')->get('max_redirect')),
+                $con->get(ImageDownloader::class),
+            );
+        });
+
+        // Model
+        $container->setClosure(ImageDownloader::class, function($con) {
+            return new ImageDownloader(
+                new FollowLocationClient(new HttpClient(
+                    $con->get(ResponseFactoryInterface::class)
+                ),$con->get('config')->get('max_redirect')),
+                $con->get(RequestFactoryInterface::class)
             );
         });
         
