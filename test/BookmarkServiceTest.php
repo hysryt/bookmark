@@ -9,7 +9,7 @@ use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 use Hysryt\Bookmark\Repository\ThumbnailRepository;
 use Hysryt\Bookmark\Service\BookmarkService;
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 class BookmarkServiceTest {
     public function testNormal() {

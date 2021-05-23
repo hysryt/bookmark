@@ -4,7 +4,7 @@ namespace Hysryt\Bookmark\Test;
 
 use Hysryt\Bookmark\Framework\Router\Route;
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 class RouteTest {
     public function testMethod() {

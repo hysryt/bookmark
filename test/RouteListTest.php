@@ -5,7 +5,7 @@ namespace Hysryt\Bookmark\Test;
 use Hysryt\Bookmark\Framework\Router\Route;
 use Hysryt\Bookmark\Framework\Router\RouteList;
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 class RouteListTest {
     public function testAddRoute() {

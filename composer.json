@@ -1,0 +1,14 @@
+{
+    "name": "hysryt/bookmark",
+    "type": "project",
+    "license": "MIT",
+    "config": {
+        "vendor-dir": "www/vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hysryt\\Bookmark\\": "www/inc",
+            "Psr\\": "www/vendor/Psr"
+        }
+    }
+}

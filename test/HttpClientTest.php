@@ -6,7 +6,7 @@ use Hysryt\Bookmark\Framework\Http\HttpClient;
 use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use Hysryt\Bookmark\Lib\HttpMessage\Uri;
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 class HttpClientTest {
     public function testNormal() {

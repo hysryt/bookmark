@@ -2,7 +2,7 @@
 
 namespace Hysryt\Bookmark\Test;
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use Hysryt\Bookmark\UseCase\BookmarkIndex\BookmarkIndexInput;

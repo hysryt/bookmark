@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 use Hysryt\Bookmark\Framework\Log\FileLogger;
 use Hysryt\Bookmark\Log\Log;

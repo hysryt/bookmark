@@ -7,7 +7,7 @@ use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use Hysryt\Bookmark\Lib\HttpMessage\ResponseFactory;
 use Hysryt\Bookmark\Lib\Image\Image;
 
-require_once(__DIR__ . '/../../www/inc/autoload.php');
+require_once(__DIR__ . '/../../www/vendor/autoload.php');
 
 class ImageTest {
     public function testSave() {

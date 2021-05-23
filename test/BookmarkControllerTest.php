@@ -16,7 +16,7 @@ use Hysryt\Bookmark\Repository\BookmarkFileRepository;
 use Hysryt\Bookmark\Service\BookmarkService;
 use Hysryt\Bookmark\ViewObject\BookmarkViewFactory;
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 $dataFilepath = __DIR__ . '/../www/bookmarks';
 $repo = new BookmarkFileRepository($dataFilepath);

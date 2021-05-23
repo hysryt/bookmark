@@ -6,7 +6,7 @@ use Hysryt\Bookmark\Lib\HttpClient\Client;
 use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use Hysryt\Bookmark\Lib\HttpMessage\ResponseFactory;
 
-require_once(__DIR__ . '/../../www/inc/autoload.php');
+require_once(__DIR__ . '/../../www/vendor/autoload.php');
 
 class GdTest {
     public function testGetimagesizefromstring() {

@@ -5,7 +5,7 @@ namespace Hysryt\Bookmark\Test;
 use Hysryt\Bookmark\Framework\Exception\NotFoundException;
 use Hysryt\Bookmark\Framework\View\TemplateEngine;
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 class TemplateEngineTest {
 	public function testNotFoundDirectory() {

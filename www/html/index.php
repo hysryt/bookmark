@@ -8,7 +8,7 @@ use Hysryt\Bookmark\Framework\Emitter\Emitter;
 use Hysryt\Bookmark\Framework\Router\Router;
 use Hysryt\Bookmark\Framework\Router\RouterConfig;
 
-require_once(__DIR__ . '/../inc/autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 // アプリケーション設定
 $config = new Config([

@@ -6,7 +6,7 @@ use Exception;
 use Hysryt\Bookmark\Lib\HttpMessage\Request;
 use InvalidArgumentException;
 
-require_once(__DIR__ . '/../www/inc/autoload.php');
+require_once(__DIR__ . '/../www/vendor/autoload.php');
 
 class RequestTest {
     public function testNormal() {
